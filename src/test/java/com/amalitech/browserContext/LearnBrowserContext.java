@@ -38,6 +38,22 @@ public class LearnBrowserContext {
         Locator editAccount = page.getByText("Edit your account information");
         assertThat(editAccount).isVisible();
 
+        // Open a new tab in the same context
+        Page newTab = page.context().newPage();
+        newTab.navigate("https://ecommerce-playground.lambdatest.io/index.php?route=account/account");
+        // Same context shares cookies, so the new tab is already logged in
+        assertThat(editAccount).isVisible();
+
+        // Open a new context, which doesn't share the login from the first context
+        BrowserContext newContext = browser.newContext();
+        Page newContextPage = newContext.newPage();
+        // The login from the first context doesn't carry over, so we see the login page
+        newContextPage.navigate("https://ecommerce-playground.lambdatest.io/index.php?route=account/account");
+
+        // Playwright can also drive other browser engines; this launches a separate Firefox browser
+        BrowserType firefox =playwright.firefox();
+        Page firefoxPage = firefox.launch(new LaunchOptions().setHeadless(false)).newPage();
+
         // Close in reverse order of creation to release everything
         page.close();
         context.close();
