@@ -11,6 +11,8 @@ A learning project for browser automation with [Playwright for Java](https://pla
 - Launching different browser engines
 - Assertions on page titles and element visibility or text
 - Reading text from the page
+- Working with inputs: filling, clearing, reading values and attributes, and ticking checkboxes
+- Taking screenshots: viewport, full page, a single element, masking and caret options
 
 ## Prerequisites
 
@@ -57,11 +59,23 @@ mvn test
 - The main source tree holds the application entry point.
 - The test source tree holds the Playwright examples, grouped into one package per topic.
 
+Current example packages:
+
+| Package | What it shows |
+| --- | --- |
+| `launchBrowser` | Launching a browser and a basic login flow |
+| `browserContext` | Contexts, new tabs and launching Firefox |
+| `handlingInputs` | Text inputs, attributes and checkboxes |
+| `takingScreenshots` | Page, full-page and element screenshots, masking and caret |
+
 New examples go in their own package under the test source tree.
+
+Screenshots from `takingScreenshots` are saved to the `snaps/` folder.
 
 ## Notes
 
 - Examples run in headed mode so you can watch the browser. To run without a window, change the headless option to `true` when launching the browser.
+- Locators must match exactly one element when you act on them (strict mode). If one matches several, make it more specific instead of using `.first()`.
 - The examples run against public practice sites, so they can break if those sites change.
 - Don't commit real credentials. Use environment variables or a gitignored config file for anything sensitive.
 
